@@ -2,19 +2,16 @@ name: Build Android APK
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [ "main", "master" ]
 
 jobs:
-  export-android:
-    name: Export Android APK
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Source Code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Godot Engine
+      - name: Set up Godot Engine
         uses: chickensoft-games/setup-godot@v1
         with:
           godot-version: '4.2.2'
@@ -22,10 +19,10 @@ jobs:
       - name: Export APK
         run: |
           mkdir -p build/android
-          godot --headless --export-release "Android" build/android/game.apk || true
+          godot --headless --export-release "Android" build/android/game.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
           name: Android-APK
-          path: build/android/
+          path: build/android/game.apk
