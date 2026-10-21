@@ -16,25 +16,13 @@ jobs:
         with:
           godot-version: '4.2.2'
 
-      - name: Create export presets
-        run: |
-          echo '[preset.0]' > export_presets.cfg
-          echo 'name="Android"' >> export_presets.cfg
-          echo 'platform="Android"' >> export_presets.cfg
-          echo 'runnable=true' >> export_presets.cfg
-
       - name: Export APK
         run: |
           mkdir -p build/android
           godot --headless --export-release "Android" build/android/game.apk || true
 
-      - name: Create Dummy APK if export fails
-        run: |
-          cd build/android
-          echo "Godot export fallback" > game.apk
-
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
           name: Android-APK
-          path: build/android/game.apk
+          path: build/android/
